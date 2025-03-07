@@ -1,0 +1,12 @@
+{% extends 'server_base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Which one do you want?</h1>
+    <ul class="list-group">
+        <li class="list-group-item"><a href="{% url 'random-quote' %}">A random quote?</a></li>
+        <li class="list-group-item"><a href="{% url 'random-joke' %}">A random joke?</a></li>
+        <li class="list-group-item"><a href="{% url 'random-compliment' %}">A random compliment?</a></li>
+    </ul>
+</div>
+{% endblock %}

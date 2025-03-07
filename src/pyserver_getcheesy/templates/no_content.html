@@ -1,0 +1,9 @@
+{% extends 'server_base.html' %}
+
+{% block content %}
+<div class="container mt-4 text-center">
+    <h1>Oh no.</h1>
+    <p>It seems there is no content available.</p>
+    <a href="{% url 'choose-random' %}" class="btn btn-primary">Maybe try another category</a>
+</div>
+{% endblock %}

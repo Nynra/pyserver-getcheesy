@@ -1,0 +1,19 @@
+{% extends 'server_base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ model_name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    {{ form.as_table }}
+                </table>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <a href="{% url random_item_url %}" class="btn btn-secondary mt-3">Try another one</a>
+</div>
+{% endblock %}
