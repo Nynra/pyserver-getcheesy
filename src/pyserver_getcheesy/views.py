@@ -47,24 +47,16 @@ class BaseRandomView(View):
     - random_view_name: The name of the random view.
     """
 
-    template_name: str = None
+    template_name: str = "getcheesy/random_model.html"
+    no_content_template_name: str = "getcheesy/no_content.html"
     model_name: str = None
     random_view_name: str = None
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if not isinstance(self.template_name, str):
-            raise AttributeError("template_name must be set in the subclass")
-        if not isinstance(self.model_name, str):
-            raise AttributeError("model_name must be set in the subclass")
-        if not isinstance(self.random_view_name, str):
-            raise AttributeError("random_view_name must be set in the subclass")
 
     def get(self, request, *args, **kwargs):
         model = self.model.get_random(user=self.request.user)
         if model is None:
             # Return no content available
-            return render(request, "no_content.html")
+            return render(request, self.no_content_template_name)
 
         model.update_activation_date()
         form = self.form_class(instance=model)
@@ -92,6 +84,7 @@ class ListsAllView(LoginRequiredMixin, HasGroupPermissionMixin, View):
             settings.PYSERVER_GETCHEESY_GETCHEESY_CREATOR_GROUP_NAME,
         ]
     }
+    template_name = "getcheesy/list_all.html"
 
     def get_objects(self) -> tuple:
         return (
@@ -111,7 +104,7 @@ class ListsAllView(LoginRequiredMixin, HasGroupPermissionMixin, View):
 
     def get(self, request, *args, **kwargs):
         context_data = self._get_pages()
-        return render(request, "list_all.html", context=context_data)
+        return render(request, self.template_name, context=context_data)
 
     def _get_pages(self):
         # Create a paginators for each model and show the first 10
@@ -141,7 +134,7 @@ class ListsAllView(LoginRequiredMixin, HasGroupPermissionMixin, View):
 class HomeView(LoginRequiredMixin, HasGroupPermissionMixin, View):
     """The home page for a logged in user."""
 
-    template_name = "home.html"
+    template_name = "getcheesy/home.html"
     permission_groups = {
         "get": [
             settings.PYSERVER_GETCHEESY_ADMIN_GROUP_NAME,
@@ -157,7 +150,7 @@ class HomeView(LoginRequiredMixin, HasGroupPermissionMixin, View):
 class ChooseRandomView(LoginRequiredMixin, HasGroupPermissionMixin, View):
     """The page where the user can choose a random model from the catagories."""
 
-    template_name = "choose_random.html"
+    template_name = "getcheesy/choose_random.html"
     permission_groups = {
         "get": [
             settings.PYSERVER_GETCHEESY_ADMIN_GROUP_NAME,
