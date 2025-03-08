@@ -27,6 +27,29 @@ class CheesyQuoteCreationForm(BaseModelForm):
             "is_active",
         ]
 
+    # Only allow user configs of wich the user is the creator
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
+            user=user
+        )
+
+    # Can this also be done in the form?
+    # def clean_user_config(self):
+    #     user_config = self.cleaned_data["user_config"]
+    #     if user_config.receiver != self.request.user:
+    #         raise forms.ValidationError("You can only create quotes for yourself")
+    #     return user_config
+
+    # We need to make sure the user only sees the user configs that belong to them
+    # def __init__(self, *args, **kwargs):
+    #     user = kwargs.pop("user")
+    #     super().__init__(*args, **kwargs)
+    #     self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
+    #         receiver=user
+    #     )
+
 
 class CheesyQuoteRandomForm(BaseModelForm):
     class Meta:

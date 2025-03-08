@@ -175,18 +175,3 @@ class Compliment(BaseRamdomizableModel):
     def __str__(self):
         return self.compliment
 
-
-class Fact(BaseRamdomizableModel):
-    user_config = models.ForeignKey(
-        ReceiverConfiguration, on_delete=models.CASCADE, related_name="fact_user_config"
-    )
-    fact = models.CharField(max_length=200)
-
-    class Meta:
-        permissions = [
-            ("can_read_random_fact", "Can read a random fact"),
-        ]
-        pass
-
-    def __str__(self):
-        return self.fact
