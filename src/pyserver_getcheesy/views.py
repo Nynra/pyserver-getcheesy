@@ -302,7 +302,7 @@ class ComplimentCreateView(ComplimentBaseView, BaseCreateView):
 
 
 class ReceiverConfigurationCreateView(ReceiverConfigBaseView, View):
-    # template_name = "config/create_config.html"
+    template_name = "create_model.html"
     fields = ["receiver"]
 
     def form_valid(self, form):

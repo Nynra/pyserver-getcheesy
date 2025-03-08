@@ -1,5 +1,6 @@
 from pyserver_getcheesy.views import (
     ListsAllView,
+    CheesyQuoteDetailView,
     CheesyQuoteCreateView,
     CheesyQuoteDeleteView,
     CheesyQuoteListView,
@@ -42,7 +43,7 @@ urlpatterns = [
     path(
         "delete-quote/<int:pk>/", CheesyQuoteDeleteView.as_view(), name="delete-quote"
     ),
-    path("detail-quote/<int:pk>/", CheesyJokeDetailView.as_view(), name="detail-quote"),
+    path("detail-quote/<int:pk>/", CheesyQuoteDetailView.as_view(), name="detail-quote"),
     path("random-quote/", RandomQuoteView.as_view(), name="random-quote"),
     path("list-jokes/", CheesyJokeListView.as_view(), name="list-jokes"),
     path("create-joke/", CheesyJokeCreateView.as_view(), name="create-joke"),
