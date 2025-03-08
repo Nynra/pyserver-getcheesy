@@ -5,6 +5,11 @@ from pyserver_getcheesy.models import (
     Compliment,
     ReceiverConfiguration,
 )
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+
+
+User = get_user_model()
 
 
 class BaseModelForm(forms.ModelForm):
@@ -13,6 +18,13 @@ class BaseModelForm(forms.ModelForm):
 
 
 class CheesyQuoteCreationForm(BaseModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
+            user=user
+        )
 
     class Meta:
         model = CheesyQuote
@@ -26,29 +38,6 @@ class CheesyQuoteCreationForm(BaseModelForm):
             "specific_date",
             "is_active",
         ]
-
-    # Only allow user configs of wich the user is the creator
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user")
-        super().__init__(*args, **kwargs)
-        self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
-            user=user
-        )
-
-    # Can this also be done in the form?
-    # def clean_user_config(self):
-    #     user_config = self.cleaned_data["user_config"]
-    #     if user_config.receiver != self.request.user:
-    #         raise forms.ValidationError("You can only create quotes for yourself")
-    #     return user_config
-
-    # We need to make sure the user only sees the user configs that belong to them
-    # def __init__(self, *args, **kwargs):
-    #     user = kwargs.pop("user")
-    #     super().__init__(*args, **kwargs)
-    #     self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
-    #         receiver=user
-    #     )
 
 
 class CheesyQuoteRandomForm(BaseModelForm):
@@ -89,6 +78,14 @@ class CheesyQuoteDetailForm(BaseModelForm):
 
 
 class CheesyQuoteChangeForm(BaseModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
+            user=user
+        )
+
     class Meta:
         model = CheesyQuote
         fields = [
@@ -104,6 +101,14 @@ class CheesyQuoteChangeForm(BaseModelForm):
 
 
 class CheesyJokeCreationForm(BaseModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
+            user=user
+        )
+
     class Meta:
         model = CheesyJoke
         fields = [
@@ -156,6 +161,14 @@ class CheesyJokeDetailForm(BaseModelForm):
 
 
 class CheesyJokeChangeForm(BaseModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
+            user=user
+        )
+
     class Meta:
         model = CheesyJoke
         fields = [
@@ -171,6 +184,14 @@ class CheesyJokeChangeForm(BaseModelForm):
 
 
 class ComplimentCreationForm(BaseModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
+            user=user
+        )
+
     class Meta:
         model = Compliment
         fields = [
@@ -223,6 +244,14 @@ class ComplimentDetailForm(BaseModelForm):
 
 
 class ComplimentChangeForm(BaseModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
+            user=user
+        )
+
     class Meta:
         model = Compliment
         fields = [
@@ -237,74 +266,15 @@ class ComplimentChangeForm(BaseModelForm):
         ]
 
 
-# class FactCreationForm(BaseModelForm):
-#     class Meta:
-#         model = Fact
-#         fields = [
-#             "fact",
-#             "activation_date",
-#             "user_config",
-#             "repeat",
-#             "repeat_interval",
-#             "on_specific_date",
-#             "specific_date",
-#             "is_active",
-#         ]
-
-
-# class FactRandomForm(BaseModelForm):
-#     class Meta:
-#         model = Fact
-#         fields = [
-#             "fact",
-#         ]
-
-
-# class FactDetailForm(BaseModelForm):
-#     class Meta:
-#         model = Fact
-#         fields = [
-#             "fact",
-#             "activation_date",
-#             "user_config",
-#             "repeat",
-#             "repeat_interval",
-#             "on_specific_date",
-#             "specific_date",
-#             "last_used",
-#             "is_active",
-#         ]
-
-#         # Make all fields read only
-#         widgets = {
-#             "fact": forms.TextInput(attrs={"readonly": True}),
-#             "activation_date": forms.TextInput(attrs={"readonly": True}),
-#             "user_config": forms.TextInput(attrs={"readonly": True}),
-#             "repeat": forms.TextInput(attrs={"readonly": True}),
-#             "repeat_interval": forms.TextInput(attrs={"readonly": True}),
-#             "on_specific_date": forms.TextInput(attrs={"readonly": True}),
-#             "specific_date": forms.TextInput(attrs={"readonly": True}),
-#             "last_used": forms.TextInput(attrs={"readonly": True}),
-#             "is_active": forms.TextInput(attrs={"readonly": True}),
-#         }
-
-
-# class FactChangeForm(BaseModelForm):
-#     class Meta:
-#         model = Fact
-#         fields = [
-#             "fact",
-#             "activation_date",
-#             "user_config",
-#             "reuse_interval",
-#             "active_window_start_date",
-#             "active_window_start_time",
-#             "active_window_duration",
-#             "is_active",
-#         ]
-
-
 class ReceiverConfigurationCreationForm(BaseModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.fields["receiver"].queryset = User.objects.filter(
+            ~Q(id=user.id)
+        )
+
     class Meta:
         model = ReceiverConfiguration
         fields = ["receiver"]
@@ -322,6 +292,19 @@ class ReceiverConfigurationDetailForm(BaseModelForm):
 
 
 class ReceiverConfigurationChangeForm(BaseModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+
+        # The receiver cannot be the same as the user
+        # and cannot be in nother receiver configuration of the user
+        self.fields["receiver"].queryset = User.objects.filter(
+            ~Q(id=user.id)
+        ).exclude(
+            id__in=ReceiverConfiguration.objects.filter(user=user).values("receiver")
+        )
+
     class Meta:
         model = ReceiverConfiguration
         fields = ["receiver"]

@@ -22,13 +22,20 @@ from pyserver_getcheesy.models import (
 )
 from pyserver_getcheesy.forms import (
     CheesyQuoteDetailForm,
-    ReceiverConfigurationDetailForm,
-    ComplimentRandomForm,
-    CheesyJokeRandomForm,
+    CheesyQuoteChangeForm,
+    CheesyQuoteCreationForm,
     CheesyQuoteRandomForm,
-    ReceiverConfigurationCreationForm,
     CheesyJokeDetailForm,
+    CheesyJokeChangeForm,
+    CheesyJokeCreationForm,
+    CheesyJokeRandomForm,
     ComplimentDetailForm,
+    ComplimentChangeForm,
+    ComplimentCreationForm,
+    ComplimentRandomForm,
+    ReceiverConfigurationDetailForm,
+    ReceiverConfigurationChangeForm,
+    ReceiverConfigurationCreationForm,
 )
 
 logger = logging.getLogger(__name__)
@@ -203,41 +210,19 @@ class CheesyQuoteCreateView(
     CheesyQuoteBaseView,
     PyserverBaseCreateView,
 ):
-    # template_name = "quote/create_quote.html"
-    fields = [
-        "quote",
-        "user_config",
-        "is_active",
-        "activation_date",
-        "repeat",
-        "repeat_interval",
-        "on_specific_date",
-        "specific_date",
-    ]
+    form_class = CheesyQuoteCreationForm
 
 
 class CheesyQuoteUpdateView(CheesyQuoteBaseView, PyserverBaseUpdateView):
-    # template_name = "quote/update_quote.html"
-    fields = [
-        "quote",
-        "user_config",
-        "is_active",
-        "activation_date",
-        "repeat",
-        "repeat_interval",
-        "on_specific_date",
-        "specific_date",
-    ]
+    form_class = CheesyQuoteChangeForm
 
 
 class CheesyQuoteDeleteView(CheesyQuoteBaseView, PyserverBaseDeleteView):
-    # template_name = "quote/delete_quote.html"
     success_url = "list-quotes"
 
 
 class CheesyQuoteDetailView(CheesyQuoteBaseView, PyserverBaseDetailView):
-    # template_name = "quote/detail_quote.html"
-    detail_form = CheesyQuoteDetailForm
+    form_class = CheesyQuoteDetailForm
 
 
 # List views
@@ -247,7 +232,6 @@ class CheesyQuoteListView(CheesyQuoteBaseView, PyserverBaseListView):
 
 
 class RandomQuoteView(CheesyQuoteBaseView, BaseRandomView):
-    # template_name = "quote/random_quote.html"
     form_class = CheesyQuoteRandomForm
 
 
@@ -283,50 +267,26 @@ class CheesyJokeBaseView(LoginRequiredMixin, HasGroupPermissionMixin):
 
 
 class CheesyJokeCreateView(CheesyJokeBaseView, PyserverBaseCreateView):
-    # template_name = "joke/create_joke.html"
-    fields = [
-        "joke",
-        "user_config",
-        "is_active",
-        "activation_date",
-        "repeat",
-        "repeat_interval",
-        "on_specific_date",
-        "specific_date",
-    ]
+    form_class = CheesyJokeCreationForm
 
 
 class CheesyJokeUpdateView(CheesyJokeBaseView, PyserverBaseUpdateView):
-    # template_name = "joke/update_joke.html"
-    fields = [
-        "joke",
-        "user_config",
-        "is_active",
-        "activation_date",
-        "repeat",
-        "repeat_interval",
-        "on_specific_date",
-        "specific_date",
-    ]
+    form_class = CheesyJokeChangeForm
 
 
 class CheesyJokeDeleteView(CheesyJokeBaseView, PyserverBaseDeleteView):
-    # template_name = "joke/delete_joke.html"
     success_url = "list-jokes"
 
 
 class CheesyJokeDetailView(CheesyJokeBaseView, PyserverBaseDetailView):
-    # template_name = "joke/detail_joke.html"
-    detail_form = CheesyJokeDetailForm
+    form_class = CheesyJokeDetailForm
 
 
 class CheesyJokeListView(CheesyJokeBaseView, PyserverBaseListView):
-    # template_name = "joke/list_jokes.html"
     pass
 
 
 class RandomJokeView(CheesyJokeBaseView, BaseRandomView):
-    # template_name = "joke/random_joke.html"
     form_class = CheesyJokeRandomForm
 
 
@@ -362,52 +322,28 @@ class ComplimentBaseView(LoginRequiredMixin, HasGroupPermissionMixin):
 
 
 class ComplimentCreateView(ComplimentBaseView, PyserverBaseCreateView):
-    # template_name = "compliment/create_compliment.html"
-    fields = [
-        "compliment",
-        "user_config",
-        "is_active",
-        "activation_date",
-        "repeat",
-        "repeat_interval",
-        "on_specific_date",
-        "specific_date",
-    ]
+    form_class = ComplimentCreationForm
 
 
 class ComplimentUpdateView(ComplimentBaseView, PyserverBaseUpdateView):
-    # template_name = "compliment/update_compliment.html"
-    fields = [
-        "compliment",
-        "user_config",
-        "is_active",
-        "activation_date",
-        "repeat",
-        "repeat_interval",
-        "on_specific_date",
-        "specific_date",
-    ]
+    form_class = ComplimentChangeForm
 
 
 class ComplimentDeleteView(ComplimentBaseView, PyserverBaseDeleteView):
-    # template_name = "compliment/delete_compliment.html"
     success_url = "list-compliments"
 
 
 class ComplimentDetailView(ComplimentBaseView, PyserverBaseDetailView):
-    # template_name = "compliment/detail_compliment.html"
-    detail_form = ComplimentDetailForm
+    form_class = ComplimentDetailForm
 
 
 class ComplimentListView(ComplimentBaseView, PyserverBaseListView):
-    # template_name = "compliment/list_compliments.html"
 
     def get_queryset(self):
         return Compliment.objects.all()
 
 
 class RandomComplimentView(ComplimentBaseView, BaseRandomView):
-    # template_name = "compliment/random_compliment.html"
     form_class = ComplimentRandomForm
 
 
@@ -442,8 +378,8 @@ class ReceiverConfigBaseView(LoginRequiredMixin, HasGroupPermissionMixin):
 
 
 class ReceiverConfigurationCreateView(ReceiverConfigBaseView, View):
+    form_class = ReceiverConfigurationCreationForm
     template_name = "tools_templates/create_model.html"
-    fields = ["receiver"]
 
     def form_valid(self, form):
         form.instance.user = self.request.user.id
@@ -502,7 +438,7 @@ class ReceiverConfigurationCreateView(ReceiverConfigBaseView, View):
 
 
 class ReceiverConfigurationUpdateView(ReceiverConfigBaseView, PyserverBaseUpdateView):
-    fields = ["receiver"]
+    form_class = ReceiverConfigurationChangeForm
 
 
 class ReceiverConfigurationDeleteView(ReceiverConfigBaseView, DeleteView):
@@ -537,12 +473,10 @@ class ReceiverConfigurationDeleteView(ReceiverConfigBaseView, DeleteView):
 
 
 class ReceiverConfigurationDetailView(ReceiverConfigBaseView, PyserverBaseDetailView):
-    # template_name = "config/detail_config.html"
-    detail_form = ReceiverConfigurationDetailForm
+    form_class = ReceiverConfigurationDetailForm
 
 
 class ReceiverConfigurationListView(ReceiverConfigBaseView, PyserverBaseListView):
-    # template_name = "config/list_configs.html"
 
     def get_queryset(self) -> QuerySet[Any]:
         return ReceiverConfiguration.objects.filter(user=self.request.user).order_by(
