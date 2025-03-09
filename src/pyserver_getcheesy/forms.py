@@ -22,6 +22,7 @@ class BaseCreationForm(BaseModelForm):
     )
     is_active = forms.BooleanField(
         required=False,
+        initial=True,
     )
     activation_date = forms.DateTimeField(
         widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
@@ -93,20 +94,6 @@ class BaseDetailForm(BaseModelForm):
         super().__init__(*args, **kwargs)
 
 
-
-class BaseDeleteForm(BaseDetailForm):
-    
-    def __init__(self, *args, **kwargs):
-        self.request_user = kwargs.pop("request_user")
-        super().__init__(*args, **kwargs)
-
-    def clean(self):
-        cleaned_data = super().clean()
-        if self.instance.user != self.request_user:
-            raise forms.ValidationError("User is not the owner of the object")
-        return cleaned_data
-
-
 class CheesyQuoteCreationForm(BaseCreationForm):
     quote = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 3, "cols": 40}),
@@ -123,26 +110,6 @@ class CheesyQuoteCreationForm(BaseCreationForm):
             "repeat_interval",
             "on_specific_date",
             "specific_date",
-        ]
-
-
-class CheesyQuoteDeleteForm(BaseDeleteForm):
-    quote = forms.CharField(
-        widget=forms.Textarea(attrs={"readonly": True, "rows": 3, "cols": 40}),
-    )
-    
-    class Meta:
-        model = CheesyQuote
-        fields = [
-            "quote",
-            "user_config",
-            "is_active",
-            "activation_date",
-            "repeat",
-            "repeat_interval",
-            "on_specific_date",
-            "specific_date",
-            "last_used",
         ]
 
 
@@ -209,26 +176,6 @@ class CheesyJokeCreationForm(BaseCreationForm):
             "repeat_interval",
             "on_specific_date",
             "specific_date",
-        ]
-
-
-class CheesyJokeDeleteForm(BaseDeleteForm):
-    joke = forms.CharField(
-        widget=forms.Textarea(attrs={"readonly": True, "rows": 3, "cols": 40}),
-    )
-    
-    class Meta:
-        model = CheesyJoke
-        fields = [
-            "joke",
-            "user_config",
-            "is_active",
-            "activation_date",
-            "repeat",
-            "repeat_interval",
-            "on_specific_date",
-            "specific_date",
-            "last_used",
         ]
 
 
@@ -299,26 +246,6 @@ class ComplimentCreationForm(BaseCreationForm):
             "repeat_interval",
             "on_specific_date",
             "specific_date",
-        ]
-
-
-class ComplimentDeleteForm(BaseDeleteForm):
-    compliment = forms.CharField(
-        widget=forms.Textarea(attrs={"readonly": True, "rows": 3, "cols": 40}),
-    )
-    
-    class Meta:
-        model = Compliment
-        fields = [
-            "compliment",
-            "user_config",
-            "is_active",
-            "activation_date",
-            "repeat",
-            "repeat_interval",
-            "on_specific_date",
-            "specific_date",
-            "last_used",
         ]
 
 

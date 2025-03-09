@@ -24,22 +24,18 @@ from pyserver_getcheesy.forms import (
     CheesyQuoteDetailForm,
     CheesyQuoteChangeForm,
     CheesyQuoteCreationForm,
-    CheesyQuoteDeleteForm,
     CheesyQuoteRandomForm,
     CheesyJokeDetailForm,
     CheesyJokeChangeForm,
     CheesyJokeCreationForm,
-    CheesyJokeDeleteForm,
     CheesyJokeRandomForm,
     ComplimentDetailForm,
     ComplimentChangeForm,
     ComplimentCreationForm,
-    ComplimentDeleteForm,
     ComplimentRandomForm,
     ReceiverConfigurationDetailForm,
     ReceiverConfigurationChangeForm,
     ReceiverConfigurationCreationForm,
-    ReceiverConfigurationDeleteForm,
 )
 
 logger = logging.getLogger(__name__)
@@ -222,7 +218,6 @@ class CheesyQuoteUpdateView(CheesyQuoteBaseView, PyserverBaseUpdateView):
 
 class CheesyQuoteDeleteView(CheesyQuoteBaseView, PyserverBaseDeleteView):
     success_url = "list-quotes"
-    form_class = CheesyQuoteDeleteForm
 
 
 class CheesyQuoteDetailView(CheesyQuoteBaseView, PyserverBaseDetailView):
@@ -280,7 +275,6 @@ class CheesyJokeUpdateView(CheesyJokeBaseView, PyserverBaseUpdateView):
 
 class CheesyJokeDeleteView(CheesyJokeBaseView, PyserverBaseDeleteView):
     success_url = "list-jokes"
-    form_class = CheesyJokeDeleteForm
 
 
 class CheesyJokeDetailView(CheesyJokeBaseView, PyserverBaseDetailView):
@@ -336,7 +330,6 @@ class ComplimentUpdateView(ComplimentBaseView, PyserverBaseUpdateView):
 
 class ComplimentDeleteView(ComplimentBaseView, PyserverBaseDeleteView):
     success_url = "list-compliments"
-    form_class = ComplimentDeleteForm
 
 
 class ComplimentDetailView(ComplimentBaseView, PyserverBaseDetailView):
@@ -451,7 +444,6 @@ class ReceiverConfigurationDeleteView(ReceiverConfigBaseView, DeleteView):
     template_name = "tools_templates/delete_model.html"
     success_url = "list-receiver-config"
     context_object_name = "item"
-    form_class = ReceiverConfigurationDeleteForm
 
     def form_valid(self, form):
         # Check if the user field matches the request user
