@@ -2,95 +2,99 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
+<div class="container mt-5">
+    <div class="row g-4">
 
-        <div class="col-md-6 mb-4">
-            <h2><a href="{% url 'list-receiver-configs' %}" class="text-decoration-none">Receiver Configs</a></h2>
-            <a type="button" class="btn btn-secondary mb-2" href="{% url 'create-receiver-config' %}">Create New</a>
-            <ul class="list-group">
-                {% for config in configs %}
-                <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
-                    <span>{{ config }}</span>
-                    <div class="btn-group" role="group">
-                        <a href="{% url 'detail-receiver-config' config.pk %}" class="btn btn-primary btn-sm">Detail</a>
-                        <a href="{% url 'update-receiver-config' config.pk %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete-receiver-config' config.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                    </div>
-                </li>
-                {% empty %}
-                <li class="list-group-item">No receiver configs found.</li>
-                {% endfor %}
-            </ul>
+        <!-- Receiver Configs -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <a href="{% url 'list-receiver-configs' %}" class="text-white text-decoration-none">Receiver Configs</a>
+                    </h4>
+                    <a href="{% url 'create-receiver-config' %}" class="btn btn-outline-light btn-sm fw-bold">+ Create New</a>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for config in configs %}
+                        <a href="{% url 'detail-receiver-config' config.pk %}" class="list-group-item list-group-item-action">
+                            {{ config }}
+                        </a>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No receiver configs found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-6 mb-4">
-            <h2><a href="{% url 'list-compliments' %}" class="text-decoration-none">Compliments</a></h2>
-            <a type="button" class="btn btn-secondary mb-2" href="{% url 'create-compliment' %}">Create New</a>
-            <ul class="list-group">
-                {% for compliment in compliments %}
-                <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
-                    <span>
-                        <strong>{{ compliment.user_config }} | </strong>
-                        {{ compliment }}
-                    </span>
-
-                    <div class="btn-group" role="group">
-                        <a href="{% url 'detail-compliment' compliment.pk %}" class="btn btn-primary btn-sm">Detail</a>
-                        <a href="{% url 'update-compliment' compliment.pk %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete-compliment' compliment.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                    </div>
-                </li>
-                {% empty %}
-                <li class="list-group-item">No compliments found.</li>
-                {% endfor %}
-            </ul>
+        <!-- Compliments -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <a href="{% url 'list-compliments' %}" class="text-white text-decoration-none">Compliments</a>
+                    </h4>
+                    <a href="{% url 'create-compliment' %}" class="btn btn-outline-light btn-sm fw-bold">+ Create New</a>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for compliment in compliments %}
+                        <a href="{% url 'detail-compliment' compliment.pk %}" class="list-group-item list-group-item-action">
+                            <strong>{{ compliment.user_config }} |</strong> {{ compliment }}
+                        </a>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No compliments found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-6 mb-4">
-            <h2><a href="{% url 'list-jokes' %}" class="text-decoration-none">Jokes</a></h2>
-            <a type="button" class="btn btn-secondary mb-2" href="{% url 'create-joke' %}">Create New</a>
-            <ul class="list-group">
-                {% for joke in jokes %}
-                <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
-                    <span>
-                        <strong>{{ joke.user_config }} | </strong>
-                        {{ joke }}
-                    </span>
-
-                    <div class="btn-group" role="group">
-                        <a href="{% url 'detail-joke' joke.pk %}" class="btn btn-primary btn-sm">Detail</a>
-                        <a href="{% url 'update-joke' joke.pk %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete-joke' joke.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                    </div>
-                </li>
-                {% empty %}
-                <li class="list-group-item">No jokes found.</li>
-                {% endfor %}
-            </ul>
+        <!-- Jokes -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <a href="{% url 'list-jokes' %}" class="text-white text-decoration-none">Jokes</a>
+                    </h4>
+                    <a href="{% url 'create-joke' %}" class="btn btn-outline-light btn-sm fw-bold">+ Create New</a>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for joke in jokes %}
+                        <a href="{% url 'detail-joke' joke.pk %}" class="list-group-item list-group-item-action">
+                            <strong>{{ joke.user_config }} |</strong> {{ joke }}
+                        </a>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No jokes found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-6 mb-4">
-            <h2><a href="{% url 'list-quotes' %}" class="text-decoration-none">Quotes</a></h2>
-            <a type="button" class="btn btn-secondary mb-2" href="{% url 'create-quote' %}">Create New</a>
-            <ul class="list-group">
-                {% for quote in quotes %}
-                <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
-                    <span>
-                        <strong>{{ quote.user_config }} | </strong>
-                        {{ quote }}
-                    </span>
-
-                    <div class="btn-group" role="group">
-                        <a href="{% url 'detail-quote' quote.pk %}" class="btn btn-primary btn-sm">Detail</a>
-                        <a href="{% url 'update-quote' quote.pk %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete-quote' quote.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                    </div>
-                </li>
-                {% empty %}
-                <li class="list-group-item">No quotes found.</li>
-                {% endfor %}
-            </ul>
+        <!-- Quotes -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <a href="{% url 'list-quotes' %}" class="text-dark text-decoration-none">Quotes</a>
+                    </h4>
+                    <a href="{% url 'create-quote' %}" class="btn btn-outline-dark btn-sm fw-bold">+ Create New</a>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for quote in quotes %}
+                        <a href="{% url 'detail-quote' quote.pk %}" class="list-group-item list-group-item-action">
+                            <strong>{{ quote.user_config }} |</strong> {{ quote }}
+                        </a>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No quotes found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
 
     </div>
