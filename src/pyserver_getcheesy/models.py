@@ -48,7 +48,7 @@ class BaseRamdomizableModel(models.Model):
     # Only repeat the message if repeat is True
     repeat = models.BooleanField(default=True)
     repeat_interval = models.DurationField(
-        default=datetime.timedelta(days=1, hours=0, minutes=0)
+        default=datetime.timedelta(days=1, hours=0, minutes=0), blank=True, null=True
     )
 
     # If on_specific_day is True, the message will only be sent on the specific_day
