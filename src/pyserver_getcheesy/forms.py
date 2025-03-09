@@ -85,14 +85,6 @@ class BaseDetailForm(BaseModelForm):
         widget=forms.DateTimeInput(attrs={"readonly": True}),
     )
 
-    def __init__(self, *args, **kwargs):
-        # try:
-        #     user = kwargs.pop("request_user")
-        # except KeyError:
-        #     raise ValueError("request_user must be passed as a keyword argument")
-        
-        super().__init__(*args, **kwargs)
-
 
 class CheesyQuoteCreationForm(BaseCreationForm):
     quote = forms.CharField(
