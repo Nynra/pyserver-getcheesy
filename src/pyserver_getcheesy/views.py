@@ -376,7 +376,7 @@ class ReceiverConfigBaseView(LoginRequiredMixin, HasGroupPermissionMixin):
     }
 
 
-class ReceiverConfigurationCreateView(ReceiverConfigBaseView, View):
+class ReceiverConfigurationCreateView(View, ReceiverConfigBaseView):
     form_class = ReceiverConfigurationCreationForm
     template_name = "tools_templates/create_model.html"
 

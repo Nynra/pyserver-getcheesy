@@ -29,10 +29,7 @@ class ReceiverConfiguration(models.Model):
         return super().clean_fields(exclude)
 
     def __str__(self):
-        return self.user.username + " -> " + self.receiver.username
-    
-    def __unicode__(self):
-        return self.user.username + " -> " + self.receiver.username
+        return self.user.username + " - " + self.receiver.username
 
 
 class BaseRamdomizableModel(models.Model):
