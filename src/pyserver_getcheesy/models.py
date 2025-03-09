@@ -30,6 +30,9 @@ class ReceiverConfiguration(models.Model):
 
     def __str__(self):
         return self.user.username + " -> " + self.receiver.username
+    
+    def __unicode__(self):
+        return self.user.username + " -> " + self.receiver.username
 
 
 class BaseRamdomizableModel(models.Model):
