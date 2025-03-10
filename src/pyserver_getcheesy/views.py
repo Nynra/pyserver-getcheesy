@@ -41,6 +41,11 @@ from pyserver_getcheesy.forms import (
 logger = logging.getLogger(__name__)
 from pyserver_tools.mixins import HasGroupPermissionMixin
 from pyserver_getcheesy.conf import settings
+from django.db.models import Q
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 class BaseRandomView(View):
@@ -398,17 +403,17 @@ class ReceiverConfigurationCreateView(View, ReceiverConfigBaseView):
 
     def get(self, request):
         form = ReceiverConfigurationCreationForm()
-        # Remove the request user and root from the queryset
-        form.fields["receiver"].queryset = form.fields["receiver"].queryset.exclude(
-            id=request.user.id
+        # The receiver is not allowed to be the user and has to be in the consumer
+        # group
+        form.fields["receiver"].queryset = User.objects.filter(
+            ~Q(id=request.user.id), 
+            # groups__name=settings.PYSERVER_GETCHEESY_GETCHEESY_CONSUMER_GROUP_NAME
         )
-        form.fields["receiver"].queryset = form.fields["receiver"].queryset.exclude(
-            username="root"
-        )
+
         # Also exclude the users that already have a receiver config
-        form.fields["receiver"].queryset = form.fields["receiver"].queryset.exclude(
-            receiver__user=request.user
-        )
+        # form.fields["receiver"].queryset = form.fields["receiver"].queryset.exclude(
+        #     receiver__user=request.user
+        # )
         context_data = self.get_context_data()
         context_data["form"] = form
         return render(request, self.template_name, context=context_data)

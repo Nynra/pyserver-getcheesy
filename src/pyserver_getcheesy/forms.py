@@ -7,6 +7,8 @@ from pyserver_getcheesy.models import (
     ReceiverConfiguration,
 )
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+from pyserver_getcheesy.conf import settings
 from django.db.models import Q
 from django.utils import timezone
 
@@ -36,8 +38,7 @@ class BaseCreationForm(BaseModelForm):
         required=False,
         widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
     )
-    repeat_interval = forms.DateTimeField(
-        label="",
+    repeat_interval = forms.TimeField(
         widget=forms.TimeInput(attrs={"class": "form-control"}),
         required=False,
     )
