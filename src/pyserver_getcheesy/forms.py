@@ -6,6 +6,7 @@ from pyserver_getcheesy.models import (
     Compliment,
     ReceiverConfiguration,
 )
+from pyserver_tools.forms import DurationMultiField, DurationMultiWidget
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from pyserver_getcheesy.conf import settings
@@ -38,13 +39,29 @@ class BaseCreationForm(BaseModelForm):
         required=False,
         widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
     )
-    repeat_interval = forms.TimeField(
-        widget=forms.TimeInput(attrs={"class": "form-control"}),
+    repeat_interval_weeks = forms.IntegerField(
+        label="Weeks",
         required=False,
+        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": 0}),
+    )
+    repeat_interval_days = forms.IntegerField(
+        label="Days",
+        required=False,
+        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": 0}),
+    )
+    repeat_interval_hours = forms.IntegerField(
+        label="Hours",
+        required=False,
+        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": 0}),
+    )
+    repeat_interval_minutes = forms.IntegerField(
+        label="Minutes",
+        required=False,
+        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": 0}),
     )
     on_specific_date = forms.BooleanField(
         required=False,
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input", "type": "checkbox"}),
     )
     specific_date = forms.DateTimeField(
         label="",
@@ -64,6 +81,21 @@ class BaseCreationForm(BaseModelForm):
         self.fields["user_config"].queryset = ReceiverConfiguration.objects.filter(
             user=user
         )
+
+    # def clean(self):
+    #     """Combine fields into a single timezone.timedelta object"""
+    #     cleaned_data = super().clean()
+
+    #     days = cleaned_data.get("duration_days") or 0
+    #     hours = cleaned_data.get("duration_hours") or 0
+    #     minutes = cleaned_data.get("duration_minutes") or 0
+    #     seconds = cleaned_data.get("duration_seconds") or 0
+
+    #     # Convert to timedelta
+    #     cleaned_data["repeat_interval"] = timezone.timedelta(
+    #         days=days, hours=hours, minutes=minutes, seconds=seconds
+    #     )
+    #     return cleaned_data
 
 
 class BaseChangeForm(BaseCreationForm):
@@ -88,8 +120,28 @@ class BaseDetailForm(BaseModelForm):
             attrs={"readonly": True, "class": "form-check-input"}
         ),
     )
-    repeat_interval = forms.DateTimeField(
-        widget=forms.TimeInput(attrs={"readonly": True, "class": "form-control"}),
+    repeat_interval_weeks = forms.IntegerField(
+        widget=forms.NumberInput(attrs={
+            "readonly": True, 
+            "class": "form-control",
+            "placeholder": 0,
+            }
+        ),
+    )
+    # Set the repeat interval to 0 if it is None
+    repeat_interval_days = forms.IntegerField(
+        widget=forms.NumberInput(attrs={
+            "readonly": True, 
+            "class": "form-control",
+            "placeholder": 0,
+            }
+        ),
+    )
+    repeat_interval_hours = forms.IntegerField(
+        widget=forms.NumberInput(attrs={"readonly": True, "class": "form-control"}),
+    )
+    repeat_interval_minutes = forms.IntegerField(
+        widget=forms.NumberInput(attrs={"readonly": True, "class": "form-control"}),
     )
     on_specific_date = forms.BooleanField(
         widget=forms.CheckboxInput(
@@ -125,7 +177,10 @@ class CheesyQuoteCreationForm(BaseCreationForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
         ]
@@ -161,7 +216,10 @@ class CheesyQuoteDetailForm(BaseDetailForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
             "last_used",
@@ -189,7 +247,10 @@ class CheesyQuoteChangeForm(BaseChangeForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
         ]
@@ -216,7 +277,10 @@ class CheesyJokeCreationForm(BaseCreationForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
         ]
@@ -251,7 +315,10 @@ class CheesyJokeDetailForm(BaseDetailForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
             "last_used",
@@ -286,7 +353,10 @@ class CheesyJokeChangeForm(BaseModelForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
         ]
@@ -313,7 +383,10 @@ class ComplimentCreationForm(BaseCreationForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
         ]
@@ -349,7 +422,10 @@ class ComplimentDetailForm(BaseDetailForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
             "last_used",
@@ -377,7 +453,10 @@ class ComplimentChangeForm(BaseChangeForm):
             "is_active",
             "activation_date",
             "repeat",
-            "repeat_interval",
+            "repeat_interval_weeks",
+            "repeat_interval_days",
+            "repeat_interval_hours",
+            "repeat_interval_minutes",
             "on_specific_date",
             "specific_date",
         ]

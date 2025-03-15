@@ -47,9 +47,10 @@ class BaseRamdomizableModel(models.Model):
 
     # Only repeat the message if repeat is True
     repeat = models.BooleanField(default=True)
-    repeat_interval = models.DurationField(
-        default=datetime.timedelta(days=1, hours=0, minutes=0), blank=True, null=True
-    )
+    repeat_interval_weeks = models.IntegerField(default=1, blank=True, null=True)
+    repeat_interval_days = models.IntegerField(default=0, blank=True, null=True)
+    repeat_interval_hours = models.IntegerField(default=0, blank=True, null=True)
+    repeat_interval_minutes = models.IntegerField(default=0, blank=True, null=True)
 
     # If on_specific_day is True, the message will only be sent on the specific_day
     # each year. This can be combined with repeat
@@ -77,10 +78,19 @@ class BaseRamdomizableModel(models.Model):
 
         # Set the repeat interval or disable the message
         if self.repeat:
-            self.activation_date = timezone.now() + self.repeat_interval
+            self.activation_date = timezone.now() + self.get_repeat_interval()
         else:
             self.is_active = False
         self.save()
+
+    def get_repeat_interval(self) -> datetime.timedelta:
+        """Return the repeat interval as a timedelta."""
+        return datetime.timedelta(
+            weeks=self.repeat_interval_weeks,
+            days=self.repeat_interval_days,
+            hours=self.repeat_interval_hours,
+            minutes=self.repeat_interval_minutes,
+        )
 
     @staticmethod
     def _get_random_index(max_index) -> int:
@@ -174,4 +184,3 @@ class Compliment(BaseRamdomizableModel):
 
     def __str__(self):
         return self.compliment
-
